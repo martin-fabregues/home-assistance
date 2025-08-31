@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: homeassistant
+    restart: always
+    networks:
+      - traefik
+    ports:
+      - "8123:8123"   # expone el puerto web de HA al host
+    volumes:
+      - homeassistant_config:/config
+    deploy:
+      replicas: 1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homeassistant.entrypoints=web"
+      - "traefik.http.routers.homeassistant.rule=PathPrefix(`/homeassistant`)"
+      - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
+
+volumes:
+  homeassistant_config:
+
+networks:
+  traefik:
+    external: true
