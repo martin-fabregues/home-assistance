@@ -13,6 +13,7 @@ services:
       - homeassistant_config:/config
     deploy:
       replicas: 1
+    privileged: true
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homeassistant.entrypoints=web"
