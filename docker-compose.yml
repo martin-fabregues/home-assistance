@@ -19,7 +19,11 @@ services:
       - "traefik.http.routers.homeassistant.entrypoints=web"
       - "traefik.http.routers.homeassistant.rule=PathPrefix(`/homeassistant`)"
       - "traefik.http.services.homeassistant.loadbalancer.server.port=8123"
-
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://192.168.100.178:3100/loki/api/v1/push"
+        loki-external-labels: "swarm_stack=whoami"
 volumes:
   homeassistant_config:
 
